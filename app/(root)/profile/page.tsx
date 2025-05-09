@@ -1,8 +1,8 @@
 import React from 'react'
 
-type Props = {}
 
-const ProfilePage = (props: Props) => {
+
+const ProfilePage = () => {
   return (
     <div>ProfilePage</div>
   )
