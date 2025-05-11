@@ -4,13 +4,17 @@ import { getAllImages } from "@/lib/actions /image.actions";
 import Image from "next/image";
 import Link from "next/link";
 
+// Next.js 15+ expects searchParams as a Promise in async components
 const Home = async ({
   searchParams,
 }: {
-  searchParams?: { [key: string]: string | string[] | undefined };
+  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
 }) => {
-  const page = Number(searchParams?.page) || 1;
-  const searchQuery = (searchParams?.query as string) || "";
+  // Await the searchParams Promise
+  const resolvedSearchParams = (await searchParams) || {};
+
+  const page = Number(resolvedSearchParams.page) || 1;
+  const searchQuery = (resolvedSearchParams.query as string) || "";
 
   const images = await getAllImages({ page, searchQuery });
 
