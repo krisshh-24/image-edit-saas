@@ -1,15 +1,23 @@
 import { auth } from "@clerk/nextjs/server";
 import Image from "next/image";
 import { redirect } from "next/navigation";
-
 import { Collection } from "@/components/shared/Collection";
 import Header from "@/components/shared/Header";
 import { getUserImages } from "@/lib/actions /image.actions"
 import { getUserById } from "@/lib/actions /user.actions";
 
-const Profile = async ({ searchParams }: SearchParamProps) => {
-  const page = Number(searchParams?.page) || 1;
-  const { userId } =await auth();
+// Define proper types for Next.js 15+ async components
+type ProfileProps = {
+  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
+  params?: Promise<{ [key: string]: string }>; // Add if using dynamic routes
+};
+
+const Profile = async ({ searchParams }: ProfileProps) => {
+  // Resolve the searchParams Promise
+  const resolvedSearchParams = (await searchParams) || {};
+  const page = Number(resolvedSearchParams.page) || 1;
+  
+  const { userId } = await auth();
 
   if (!userId) redirect("/sign-in");
 
