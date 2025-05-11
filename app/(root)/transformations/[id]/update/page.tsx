@@ -7,9 +7,15 @@ import { transformationTypes } from "@/constants";
 import { getUserById } from "@/lib/actions /user.actions";
 import { getImageById } from "@/lib/actions /image.actions";
 
-const Page = async ({ params }: SearchParamProps) => {
-const { id } = await params;
-  const { userId } =await  auth();
+// Correct typing for Next.js 15+ async page components
+const Page = async ({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) => {
+  // Await the params Promise to get the actual params object
+  const { id } = await params;
+  const { userId } = await auth();
 
   if (!userId) redirect("/sign-in");
 

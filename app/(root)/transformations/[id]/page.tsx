@@ -9,9 +9,16 @@ import { getImageById } from "@/lib/actions /image.actions";
 import { getImageSize } from "@/lib/utils";
 import { DeleteConfirmation } from "@/components/shared/DeleteConfirmation";
 
-const ImageDetails = async ({ params}: SearchParamProps) => {
-  const { id } =await params;
+// Correct type for Next.js 15+ async page components
+const ImageDetails = async ({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) => {
+  // Await the params Promise to get the actual params object
+  const { id } = await params;
   const { userId } = await auth();
+
   if (!id) {
     throw new Error("Image ID is required");
   }
@@ -62,11 +69,9 @@ const ImageDetails = async ({ params}: SearchParamProps) => {
 
       <section className="mt-10 border-t border-dark-400/15">
         <div className="flex flex-col md:flex-row gap-8">
-
           {/* MEDIA UPLOADER */}
           <div className="flex flex-col gap-4">
             <h3 className="text-2xl font-bold text-dark-600">Original</h3>
-
             <Image
               width={getImageSize(image.transformationType, image, "width")}
               height={getImageSize(image.transformationType, image, "height")}
