@@ -1,5 +1,6 @@
 'use client'
-import React from 'react'
+
+import React, { useEffect, useState } from 'react'
 import {
   Sheet,
   SheetContent,
@@ -16,6 +17,16 @@ import { Button } from '../ui/button'
 
 const MobileNav = () => {
   const pathname = usePathname()
+  const [isClient, setIsClient] = useState(false)
+
+  // Ensure client-side rendering
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
+
+  if (!isClient) {
+    return null // Prevent rendering during SSR to avoid hydration issues
+  }
 
   return (
     <header className='flex fixed justify-between h-16 w-full border-b-4 border-purple-100 bg-white p-5 lg:hidden'>
@@ -85,12 +96,12 @@ const MobileNav = () => {
             </SheetContent>
           </Sheet>
         </SignedIn>
-               <SignedOut>
-                <Button asChild className='py-4 px-6 flex-center gap-3 rounded-full p-16-semibold focus-visible:ring-offset-0 focus-visible:ring-transparent bg-purple-600 bg-cover'>
-                    <Link href='/sign-in'>Login</Link>
-                </Button>
-            </SignedOut>
-            
+
+        <SignedOut>
+          <Button asChild className='py-4 px-6 flex-center gap-3 rounded-full p-16-semibold focus-visible:ring-offset-0 focus-visible:ring-transparent bg-purple-600 bg-cover'>
+            <Link href='/sign-in'>Login</Link>
+          </Button>
+        </SignedOut>
       </nav>
     </header>
   )

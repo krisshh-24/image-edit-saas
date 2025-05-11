@@ -188,6 +188,9 @@ export const defaultValues = {
   color: "",
   prompt: "",
   publicId: "",
+  userId: "",
+  type: "",
+  creditBalance: 0,
 };
 
 export const creditFee = -1;
